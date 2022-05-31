@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+
+	<!-- datasource -->
+	<bean id="sqlSessionFactory"
+		  class="com.jsp.datasource.OracleMybatisSqlSessionFactory" />
+
+	<!-- Repository -->
+	<bean id="memberDAO"
+	      class="com.jsp.dao.MemberDAOImpl" />
+	<bean id="searchMemberDAO"
+	      class="com.jsp.dao.SearchMemberDAOImpl" />
+	<bean id = "menuDAO"  
+		  class="com.jsp.dao.MenuDAOImpl" />	
+	<bean id = "noticeDAO"  
+		  class="com.jsp.dao.NoticeDAOImpl" />	
+	<bean id = "boardDAO"  
+		  class="com.jsp.dao.BoardDAOImpl" />	
+	
+	<!-- Service -->
+	<bean id="menuService" class="com.jsp.service.MenuServiceImpl">		
+		<property name="sqlSessionFactory" ref-value="sqlSessionFactory" />
+		<property name="menuDAO" ref-value="menuDAO" />
+	</bean>
+	<bean id="memberService"
+	      class="com.jsp.service.MemberServiceImpl" >
+		<property name="sqlSessionFactory"  ref-value="sqlSessionFactory"/>
+		<property name="memberDAO"  ref-value="memberDAO"/>     
+	</bean>	      
+	<bean id="searchMemberService"
+	      class="com.jsp.service.SearchMemberServiceImpl" >	    	         
+		<property name="sqlSessionFactory"  ref-value="sqlSessionFactory"/>
+		<property name="memberDAO"  ref-value="searchMemberDAO"/>     
+	</bean>
+	
+	<bean id="loginSearchMemberService"
+	      class="com.jsp.service.LoginSearchMemberServiceImpl" >
+		<property name="memberDAO" ref-value="searchMemberDAO" />
+		<property name="searchMemberDAO" ref-value="searchMemberDAO" />
+		<property name="sqlSessionFactory" ref-value="sqlSessionFactory" />
+		<property name="sqlSessionFactoryForLogin" ref-value="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="noticeService"
+	      class="com.jsp.service.NoticeServiceImpl" >
+		<property name="noticeDAO" ref-value="noticeDAO" />
+		<property name="sqlSessionFactory" ref-value="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="boardService"
+	      class="com.jsp.service.BoardServiceImpl" >
+		<property name="boardDAO" ref-value="boardDAO" />
+		<property name="sqlSessionFactory" ref-value="sqlSessionFactory" />
+	</bean>
+
+</beans>
