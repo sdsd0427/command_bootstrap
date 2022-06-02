@@ -10,26 +10,40 @@ import com.jsp.dto.BoardVO;
 import com.jsp.service.BoardService;
 
 public class BoardModifyAction implements Action {
-
-	private BoardService boardService;
 	
+	private BoardService boardService;
 	public void setBoardService(BoardService boardService) {
 		this.boardService = boardService;
 	}
 	
 	@Override
-	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String url = "redirect:/board/detail.do?bno=" + request.getParameter("bno");
+	public String process(HttpServletRequest request, HttpServletResponse response)
+			throws Exception{		
+		String url = "redirect:/board/detail.do?from=modify&bno="+request.getParameter("bno");
 		
-		BoardModifyCommand boardReq = XSSHttpRequestParameterAdapter.execute(request, BoardModifyCommand.class, true);
+		try {
+		BoardModifyCommand modifyReq 
+		= (BoardModifyCommand)XSSHttpRequestParameterAdapter.execute(request, BoardModifyCommand.class, true);
 		
-		BoardVO board = boardReq.toBoardVO();
-		
+		BoardVO board = modifyReq.toBoardVO();
 		board.setContent(request.getParameter("content"));
 		
 		boardService.modify(board);
+		}catch(Exception e) {
+			e.printStackTrace();
+			url = null;
+			throw e;
+		}			
 		
 		return url;
 	}
 
 }
+
+
+
+
+
+
+
+

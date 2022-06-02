@@ -2,10 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true" %>
 
+<head></head>
+
+<title></title>
 
 
-<script>
-	alert("삭제되었습니다.");
-	window.opener.location.reload();
-	window.close();
-</script>
+<body>
+	<h1>Board Main Page...</h1>
+</body>

@@ -20,7 +20,7 @@
         <div class="info">
              <div class="row">
 		          <a href="javascript:OpenWindow('<%=request.getContextPath()%>/member/detail.do?id=${loginUser.id }','내정보','700','800')"class="d-block" >${loginUser.name }</a>&nbsp;&nbsp;
-		          <button onclick="location.href='<%=request.getContextPath() %>/common.logout.do';" class="btn btn-xs btn-primary col-xs-3 " type="button" >LOGOUT</button>
+		          <button onclick="location.href='<%=request.getContextPath() %>/common/logout.do';" class="btn btn-xs btn-primary col-xs-3 " type="button" >LOGOUT</button>
 	         </div>
 	         <a href="tel:${loginUser.phone }">tel : ${loginUser.phone }</a><br/>
            	<a href="mailto:${loginUser.email }">email : ${loginUser.email }</a>
