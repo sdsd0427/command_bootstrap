@@ -102,8 +102,15 @@ function subMenu_go(mCode){
 	//alert(mCode);
 	if(mCode!="M000000"){	
 
-		$.getJSON("<%=request.getContextPath()%>/subMenu.do?mCode="+mCode,function(data){
-			printData(data,$('.subMenuList'),$('#subMenu-list-template'),'.subMenu');
+		$.ajax({
+			url:"<%=request.getContextPath()%>/subMenu.do?mCode="+mCode,
+			method:"get",
+			success:function(data){
+				printData(data,$('.subMenuList'),$('#subMenu-list-template'),'.subMenu');
+			},
+			error:function(error){
+				AjaxErrorSecurityRedirectHandler(error.status);
+			}
 		});
 
 	}else{
