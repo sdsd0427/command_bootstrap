@@ -103,4 +103,11 @@
 		</div><!-- end row  -->		
 		
     </section>
+<script>
+
+function submit_go(url, pno){
+	location.href=url+"?pno="+pno;
+}
+
+</script>    
  </body>

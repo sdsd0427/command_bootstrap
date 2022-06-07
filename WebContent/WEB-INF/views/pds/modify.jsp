@@ -1,84 +1,177 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-   
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <head>
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/bootstrap/plugins/summernote/summernote-bs4.min.css">
+ <!-- summernote -->
+  <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/bootstrap/plugins/summernote/summernote-bs4.css">
 </head>
-<title>자료 수정</title>
-<body>   
-	<section class="content-header">
-	  	<div class="container-fluid">
-	  		<div class="row md-2">
-	  			<div class="col-sm-6">
-	  				<h1>수정하기</h1>  				
-	  			</div>
-	  			<div class="col-sm-6">
-	  				<ol class="breadcrumb float-sm-right">
-			        <li class="breadcrumb-item">
-			        	<a href="list.do">
-				        	<i class="fa fa-dashboard"></i>자료실
-				        </a>
-			        </li>
-			        <li class="breadcrumb-item active">
-			        	수정하기
-			        </li>		        
-	    	  </ol>
-	  			</div>
-	  		</div>
-	  	</div>
-	</section>
-  <!-- Main content -->
+
+
+<title>자료실 수정페이지</title>
+
+<body>
+<body>	
+	 <!-- Content Header (Page header) -->
+    <section class="content-header">
+    	<div class="container-fluid">
+    		<div class="row mb-2">
+    			<div class="col-sm-6">
+	      			<h1>자료실</h1>
+	      		</div>	      		
+	    	
+	       		
+	       		<div class="col-sm-6">
+			      <ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item"><a href="list.do"><i class="fa fa-dashboard"></i>자료실</a></li>
+			        <li class="breadcrumb-item active">리스트</li>		        
+			      </ol>
+		      	</div>
+	     	</div>	     	
+      	</div>
+    </section>
+
+   <!-- Main content -->
     <section class="content container-fluid">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="card card-outline card-info">
-					<div class="card-header row">
-						<h4 class="col-md-8">글 수정</h4>
-						<div class="col-md-4">
-							<div class="float-right">
-								<button type="button" class="btn btn-warning" id="modifyBtn" onclick="modify_go();">수 정</button>
-								&nbsp;&nbsp;&nbsp;&nbsp;
-								<button type="button" class="btn btn-default " id="cancelBtn" onclick="history.go(-1);">취 소</button>
-							</div>
-						</div>
+				<div class="card card-outline card-primary">
+					<div class="card-header">
+						<h3>자료 수정</h3>
 					</div><!--end card-header  -->
 					<div class="card-body">
-						<form role="form" method="post" action="modify.do" name="modifyForm">
+						<form enctype="multipart/form-data" role="form" method="post" action="modify.do" name="modifyForm">
 							<input type="hidden" name="pno" value="${pds.pno }" />
-							<div class="form-group">
-								<label for="title">제 목</label> 
-								<input type="text" id="title" name='title' class="form-control" value="${pds.title }">
-							</div>
+							
 							<div class="form-group">
 								<label for="writer">작성자</label> 
-								<input type="text" id="writer" readonly	name="writer" class="form-control"  value="${pds.writer }">
+								<input type="text" id="writer" readonly
+									name="writer" class="form-control" value="${pds.writer }">
 							</div>
 							<div class="form-group">
-								<label for="content">내 용</label>		
-								<textarea class="form-control" name="content" id="content" rows="3"
-									placeholder="500자 내외로 작성하세요.">${fn:escapeXml(pds.content) }</textarea>						
+								<label for="title">제 목</label> 
+								<input type="text" id="title" value="${pds.title }"
+									name='title' class="form-control" placeholder="제목을 쓰세요">
 							</div>
+							<div class="form-group">
+								<label for="content">내 용</label>
+								<textarea id="content" name="content">${pds.content }</textarea>
+							</div>
+							
+							<div class="form-group">								
+								<div class="card card-outline card-success">
+									<div class="card-header">
+										<h3 style="display:inline;line-height:40px;">첨부파일 : </h3>
+										&nbsp;&nbsp;
+										<button class="btn btn-primary"	onclick="addFile_go()" type="button" id="addFileBtn">Add File</button>
+									</div>									
+									<div class="card-footer fileInput">
+										<ul class="mailbox-attachments d-flex align-items-stretch clearfix">
+											
+											<c:forEach items="${pds.attachList }" var="attach" >
+											<li class="attach-item thumb${attach.ano }" file-name="${attach.fileName }" target-ano="${attach.ano }">																			
+												<div class="mailbox-attachment-info ">
+													<a class="mailbox-attachment-name" name="attachedFile" attach-fileName="${attach.fileName }" attach-no="${attach.ano }" href="<%=request.getContextPath()%>/pds/getFile.do?ano=${attach.ano }"  >													
+														<i class="fas fa-paperclip"></i>
+														${attach.fileName }&nbsp;&nbsp;
+														<button type="button" onclick="removeFile_go('thumb${attach.ano}');return false;" style="border:0;outline:0;" 
+																class="badge bg-red">X</button>																									
+													</a>													
+												</div>
+											</li>	
+											</c:forEach>
+										</ul>
+										<br/>														
+									</div>
+								</div>
+							</div>
+							
+						
 						</form>
 					</div><!--end card-body  -->
-					
+					<div class="card-footer">
+						<button type="button" class="btn btn-warning" id="modifyBtn" onclick="modify_submit();">수 정</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<button type="button" class="btn" id="cancelBtn" onclick="history.go(-1);">취 소</button>
+					</div><!--end card-footer  -->
 				</div><!-- end card -->				
 			</div><!-- end col-md-12 -->
 		</div><!-- end row -->
     </section>
-    <!-- /.content -->    
-     
-    <script>
-    	window.onload=function(){
-    		summernote_go($("#content"),'<%=request.getContextPath()%>');
-    	}
-    	
-    	function modify_go(){
-    		$("form[role='form']").submit();
-    	}
-    </script>
+    <!-- /.content -->
     
-  
-</body>    
+<script>
+	window.onload=function(){
+		summernote_go($('#content'),'<%=request.getContextPath()%>');
+	}	
+</script>    
+<script>
+function removeFile_go(className){
+	//alert('X btn');
+	var li = $('li.'+className);
+	
+	if(!confirm(li.attr("file-name")+"을 정말 삭제하시겠습니까?")){
+		return;
+	}
+	
+	li.remove();
+	
+	var input=$('<input>').attr({"type":"hidden",
+		"name":"deleteFile",
+		"value":li.attr("target-ano")
+		});
+	$('form[role="form"]').prepend(input);
+}
+
+var dataNum = 0;
+function addFile_go(){
+	//alert("add file btn");
+	
+	var attachedFile = $('a[name="attachedFile"]').length; //기존파일 개수
+	var inputFile = $('input[name="uploadFile"]').length; //추가된 파일 개수
+	var attachCount = attachedFile + inputFile;
+	
+	if(attachCount >= 5){
+		alert("파일 추가는 5개까지만 가능합니다.");
+		return;
+	}
+	
+	var div=$('<div>').addClass("inputRow").attr("data-no",dataNum);
+	var input=$('<input>').attr({"type":"file","name":"uploadFile"}).css("display","inline");
+	div.append(input).append("<button onclick='remove_go("+dataNum+");' style='border:0;outline:0;' class='badge bg-red' type='button'>X</button>");
+	
+	$('.fileInput').append(div);
+	
+	dataNum++;
+}
+
+function modify_submit(){
+// 	alert("modify btn");
+	var form = $('form[name="modifyForm"]');
+	
+	//유효성 체크
+	if($("input[name='title']").val()==""){
+		alert($("input[name='title']").name+"은 필수입니다.");
+		$("input[name='title']").focus();
+		return;
+	}
+	
+	//파일 첨부 확인
+	var files = $('input[name="uploadFile"]');
+	for(var file of files){
+		console.log(file.name+" : "+file.value);
+		if(file.value==""){
+			alert("파일을 선택하세요.");
+			file.focus();
+			return false;
+		}
+	}
+	
+	form.submit();
+}
+
+
+</script>
     
+</body>

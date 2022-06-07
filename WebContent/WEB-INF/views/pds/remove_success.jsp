@@ -5,7 +5,7 @@
 
 
 <script>
-	alert("삭제되었습니다.");
-	window.opener.location.reload();
+	alert("정상적으로 삭제되었습니다.");
 	window.close();
+	window.opener.location.reload(true);
 </script>
